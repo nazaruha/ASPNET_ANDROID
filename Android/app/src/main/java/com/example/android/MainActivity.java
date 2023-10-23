@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -26,22 +27,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ImageView ivMyImage;
+    private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ivMyImage = findViewById(R.id.ivMyImage);
-//        String url = "https://pipi.itstep.click/images/monika.jpg";
-        String url = "http://10.0.2.2:5290/images/1.jpg";
+    }
+
+    public void OnGetImageHandleClick(View view) {
+        url = "https://pipi.itstep.click/images/monika.jpg";
+        //        String url = "http://10.0.2.2:5290/images/1.jpg";
         Glide // бібліотека, яка призначена для стягування фоток з інета для свого UI на Android
                 .with(this)
                 .load(url)
                 .apply(new RequestOptions().override(600))
                 .into(ivMyImage);
 
+
+    }
+
+    public void OnGetCategoriesHandleClick(View view) {
+//        url = "https://pipi.itstep.click/api/categories/list";
+
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://spu123.itstep.click")
+                .baseUrl("https://pipi.itstep.click")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -49,7 +60,15 @@ public class MainActivity extends AppCompatActivity {
         requestCategory.GetCategories().enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                Log.d("my-tag", "Список категорій: " + response.body());
+//                Log.d("my-tag", "Список категорій: " + response.body().toString());
+                Log.d("my-tag", "Список категорій: ");
+                if (response.isSuccessful()) {
+                    for (Category category : response.body()) {
+                        Log.d("my-tag", "Назва: " + category.GetName() + " Опис: " + category.GetDescription() + " Фото: " + category.GetImage());
+                    }
+                } else {
+                    Log.d("my-tag", "респонс не успішний");
+                }
             }
 
             @Override

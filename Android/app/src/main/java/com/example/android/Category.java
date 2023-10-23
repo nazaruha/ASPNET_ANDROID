@@ -1,31 +1,31 @@
 package com.example.android;
 
 public class Category {
-    public Integer Id;
-    public String Name, Description, Image;
+    public int id;
+    public String name, description, image;
 
     public Integer GetId() {
-        return Id;
+        return id;
     }
-    public void SetId(Integer Id) {
-        this.Id = Id;
+    public void SetId(int id) {
+        this.id = id;
     }
     public String GetName() {
-        return Name;
+        return name;
     }
-    public void SetName(String Name) {
-        this.Name = Name;
+    public void SetName(String name) {
+        this.name = name;
     }
     public String GetDescription() {
-        return Description;
+        return description;
     }
-    public void SetDescription(String Description) {
-        this.Description = Description;
+    public void SetDescription(String description) {
+        this.description = description;
     }
     public String GetImage() {
-        return Image;
+        return image;
     }
-    public void SetImage(String Image) {
-        this.Image = Image;
+    public void SetImage(String image) {
+        this.image = image;
     }
 }
