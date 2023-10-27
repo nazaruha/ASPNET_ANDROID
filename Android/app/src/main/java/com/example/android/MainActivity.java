@@ -9,6 +9,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.android.dto.category.CategoryItemDTO;
+import com.example.android.service.ApplicationNetwork;
 
 import java.util.List;
 
@@ -20,12 +22,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 
 public class MainActivity extends AppCompatActivity {
-
-    interface IRequestCategory {
-        @GET("/api/categories/list")
-        Call<List<Category>> GetCategories();
-    }
-
     private ImageView ivMyImage;
     private String url;
 
@@ -49,32 +45,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnGetCategoriesHandleClick(View view) {
-//        url = "https://pipi.itstep.click/api/categories/list";
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://pipi.itstep.click")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        IRequestCategory requestCategory = retrofit.create(IRequestCategory.class);
-        requestCategory.GetCategories().enqueue(new Callback<List<Category>>() {
-            @Override
-            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-//                Log.d("my-tag", "Список категорій: " + response.body().toString());
-                Log.d("my-tag", "Список категорій: ");
-                if (response.isSuccessful()) {
-                    for (Category category : response.body()) {
-                        Log.d("my-tag", "Назва: " + category.GetName() + " Опис: " + category.GetDescription() + " Фото: " + category.GetImage());
+        ApplicationNetwork
+                .getInstance() // init connection
+                .getCategoriesApi() // get interface with urls to work with cetegories
+                .list() // use its method with url to get list of categories
+                .enqueue(new Callback<List<CategoryItemDTO>>() { // enqueue -> asynchronous request to the server
+                    @Override
+                    public void onResponse(Call<List<CategoryItemDTO>> call, Response<List<CategoryItemDTO>> response) {
+                        Log.d("my-tag", "Список категорій: ");
+                        if (response.isSuccessful()) {
+                            for (CategoryItemDTO category : response.body()) {
+                                Log.d("my-tag", "Назва: " + category.getName() + " Опис: " + category.getDescription() + " Фото: " + category.getImage());
+                            }
+                        } else {
+                            Log.d("my-tag", "респонс не успішний");
+                        }
                     }
-                } else {
-                    Log.d("my-tag", "респонс не успішний");
-                }
-            }
 
-            @Override
-            public void onFailure(Call<List<Category>> call, Throwable t) {
-                Log.d("my-tag", "!!!Помилка при отриманні списку категорі!!!" + t.getMessage());
-            }
-        });
+                    @Override
+                    public void onFailure(Call<List<CategoryItemDTO>> call, Throwable t) {
+                        Log.d("my-tag", "!!!Помилка при отриманні списку категорі!!!" + t.getMessage());
+                    }
+                });
+
     }
 }
