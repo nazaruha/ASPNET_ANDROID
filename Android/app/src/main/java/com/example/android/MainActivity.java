@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.android.category.CategoriesAdapter;
+import com.example.android.category.CategoryCreateActivity;
 import com.example.android.dto.category.CategoryItemDTO;
 import com.example.android.service.ApplicationNetwork;
 
@@ -41,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
         RVCategories.setHasFixedSize(true);
         RVCategories.setLayoutManager(new GridLayoutManager(this/*current object*/, 2/*columns*/, RecyclerView.VERTICAL, false));
         RVCategories.setAdapter(new CategoriesAdapter(new ArrayList<>()));
+    }
+
+    public void onClickGoToCategoryCreate(View view) {
+        Intent intent = new Intent(MainActivity.this, CategoryCreateActivity.class); // створюєш намір  переходу на сторінку CategoryCreateActivity з сторінки MainActivity
+        startActivity(intent); // відкрити сторінку на яку хочемо перейти
+        finish(); // закрити поточну сторінку
     }
 
     public void OnGetImageHandleClick(View view) {
