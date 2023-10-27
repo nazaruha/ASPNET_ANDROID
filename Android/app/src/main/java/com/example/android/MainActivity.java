@@ -1,6 +1,8 @@
 package com.example.android;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,9 +11,11 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.android.category.CategoriesAdapter;
 import com.example.android.dto.category.CategoryItemDTO;
 import com.example.android.service.ApplicationNetwork;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -25,11 +29,18 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ivMyImage;
     private String url;
 
+    CategoriesAdapter categoriesAdapter;
+    RecyclerView RVCategories;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ivMyImage = findViewById(R.id.ivMyImage);
+        RVCategories = findViewById(R.id.recyclerViewCategories);
+        RVCategories.setHasFixedSize(true);
+        RVCategories.setLayoutManager(new GridLayoutManager(this/*current object*/, 2/*columns*/, RecyclerView.VERTICAL, false));
+        RVCategories.setAdapter(new CategoriesAdapter(new ArrayList<>()));
     }
 
     public void OnGetImageHandleClick(View view) {
@@ -54,9 +65,12 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(Call<List<CategoryItemDTO>> call, Response<List<CategoryItemDTO>> response) {
                         Log.d("my-tag", "Список категорій: ");
                         if (response.isSuccessful()) {
-                            for (CategoryItemDTO category : response.body()) {
-                                Log.d("my-tag", "Назва: " + category.getName() + " Опис: " + category.getDescription() + " Фото: " + category.getImage());
-                            }
+//                            for (CategoryItemDTO category : response.body()) {
+//                                Log.d("my-tag", "Назва: " + category.getName() + " Опис: " + category.getDescription() + " Фото: " + category.getImage());
+//                            }
+                            List<CategoryItemDTO> data = response.body();
+                            categoriesAdapter = new CategoriesAdapter(data);
+                            RVCategories.setAdapter(categoriesAdapter);
                         } else {
                             Log.d("my-tag", "респонс не успішний");
                         }

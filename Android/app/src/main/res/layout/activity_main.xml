@@ -4,41 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="10dp"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/btnGetCategories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="OnGetCategoriesHandleClick"
+        android:text="Отримати категорії CLI"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewCategories"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.533" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCategories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/ivMyImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.513" />
 
     <ImageView
         android:id="@+id/ivMyImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.869"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewCategories"
+        app:layout_constraintVertical_bias="0.235"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
         android:id="@+id/btnGetImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Загрузити фото"
         android:onClick="OnGetImageHandleClick"
+        android:text="Загрузити фото"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivMyImage"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivMyImage"
-        app:layout_constraintVertical_bias="0.059" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewCategories"
+        app:layout_constraintVertical_bias="0.526" />
 
-    <Button
-        android:id="@+id/btnGetCategories"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Отримати категорії CLI"
-        android:onClick="OnGetCategoriesHandleClick"
-        app:layout_constraintBottom_toTopOf="@+id/ivMyImage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.884"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.062" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
