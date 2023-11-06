@@ -1,5 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.EntityFrameworkCore;
+using System.Net.WebSockets;
+using WebPipi.Constants;
 using WebPipi.Data.Entities;
+using WebPipi.Data.Entities.Identity;
 
 namespace WebPipi.Data
 {
@@ -12,6 +17,43 @@ namespace WebPipi.Data
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppEFContext>();
                 context.Database.Migrate();
+                var userManager = scope.ServiceProvider
+                    .GetRequiredService<UserManager<UserEntity>>();
+                var roleManager = scope.ServiceProvider
+                    .GetRequiredService<RoleManager<RoleEntity>>();
+
+                if (!context.Roles.Any())
+                {
+                    RoleEntity admin = new RoleEntity
+                    {
+                        Name = Roles.Admin
+                    };
+                    RoleEntity user = new RoleEntity
+                    {
+                        Name = Roles.User
+                    };
+                    var result = roleManager.CreateAsync(admin).Result;
+                    result = roleManager.CreateAsync(user).Result;  
+                }
+
+                if (!context.Users.Any())
+                {
+                    UserEntity user = new UserEntity
+                    {
+                        FirstName = "Marko",
+                        LastName = "Muha",
+                        Email = "muha@gmail.com",
+                        UserName = "muha@gmail.com"
+                    };
+                    var result = userManager.CreateAsync(user, "123456").Result; 
+                    if (result.Succeeded) 
+                    {
+                        result = userManager
+                            .AddToRoleAsync(user, Roles.Admin)
+                            .Result;
+                    }
+                }
+
                 if (!context.Categories.Any()) // якщо нема даних в категоріях
                 {
                     var laptop = new CategoryEntity
