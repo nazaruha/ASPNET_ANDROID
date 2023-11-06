@@ -23,6 +23,7 @@ namespace WebPipi.Helpers
             }
             catch { return null; }
         }
+
         public static string SaveImage(string imageBase64)
         {
 
